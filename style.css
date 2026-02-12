@@ -7,7 +7,7 @@
     --accent: #2563eb;
     --border-color: #e5e5e5;
     --subtext: #666666;
-    
+
     --transition-speed: 0.3s;
 }
 
@@ -20,6 +20,17 @@
     --accent: #3b82f6;
     --border-color: #333333;
     --subtext: #a3a3a3;
+}
+
+[data-theme="real-dark"] {
+    /* Real Dark Theme */
+    --bg-color: #000000;
+    --text-color: #e5e5e5;
+    --card-bg: #0a0a0a;
+    --card-hover-bg: #1a1a1a;
+    --accent: #ffffff;
+    --border-color: #262626;
+    --subtext: #888888;
 }
 
 * {
@@ -62,17 +73,22 @@ body {
     letter-spacing: -0.03em;
 }
 
-/* Theme Toggle */
+/* Theme Toggle & Dropdown */
+.theme-dropdown {
+    position: relative;
+    z-index: 1000;
+}
+
 .theme-btn {
-    background: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
     border: none;
     cursor: pointer;
     color: var(--text-color);
-    padding: 8px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 8px;
     transition: background 0.2s;
 }
 
@@ -80,16 +96,84 @@ body {
     background: var(--card-hover-bg);
 }
 
-.theme-btn svg {
-    width: 20px;
-    height: 20px;
+.theme-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px;
+    width: 240px;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.sun-icon { display: none; }
-.moon-icon { display: block; }
+.theme-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
-[data-theme="dark"] .sun-icon { display: block; }
-[data-theme="dark"] .moon-icon { display: none; }
+.theme-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    color: var(--subtext);
+    transition: all 0.2s;
+}
+
+.theme-option:hover {
+    background: var(--card-hover-bg);
+    color: var(--text-color);
+}
+
+.theme-option.selected {
+    background: var(--card-hover-bg);
+    color: var(--text-color);
+}
+
+.theme-option svg {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+}
+
+.theme-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.theme-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.theme-desc {
+    font-size: 0.75rem;
+    color: var(--subtext);
+    margin-top: 2px;
+}
+
+/* Icons */
+.sun-icon,
+.moon-icon,
+.bulb-icon {
+    display: block;
+}
 
 /* Intro */
 .intro {
@@ -102,6 +186,13 @@ body {
     font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: 0.5rem;
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: default;
+}
+
+.intro h2:hover {
+    transform: scale(1.05);
 }
 
 .intro p {
@@ -134,7 +225,7 @@ body {
 .card:hover {
     transform: translateY(-4px);
     border-color: var(--accent);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -188,14 +279,35 @@ body {
 /* Footer */
 .footer {
     border-top: 1px solid var(--border-color);
-    padding: 2rem 0;
+    padding: 3rem 0;
     text-align: center;
     color: var(--subtext);
     font-size: 0.9rem;
 }
 
+.collab-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2px;
+    transition: all 0.2s;
+}
+
+.collab-link:hover {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+}
+
 /* Responsive */
 @media (max-width: 600px) {
-    .intro h2 { font-size: 1.8rem; }
-    .grid { grid-template-columns: 1fr; }
+    .intro h2 {
+        font-size: 1.8rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
 }

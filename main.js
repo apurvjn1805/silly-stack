@@ -38,8 +38,19 @@ const projects = [
 ];
 
 // DOM Elements
+// DOM Elements Dyanmic
 const grid = document.getElementById('project-grid');
-const themeToggle = document.getElementById('theme-toggle');
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const themeMenu = document.getElementById('theme-menu');
+const themeOptions = document.querySelectorAll('.theme-option');
+const currentThemeIcon = document.getElementById('current-theme-icon');
+
+// Icons (Simple SVG strings for injection)
+const icons = {
+    light: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`,
+    dark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`,
+    realDark: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2v1"/><path d="M12 7v1"/><path d="M5.6 5.6l.7.7"/><path d="M18.4 5.6l-.7.7"/><path d="M12 12v6"/><path d="M12 12a5 5 0 0 1 5-5"/><path d="M12 12a5 5 0 0 0-5-5"/></svg>`
+};
 
 // Render Projects
 function renderProjects() {
@@ -61,21 +72,70 @@ function renderProjects() {
 }
 
 // Theme Logic
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    // Update Icon
+    if (theme === 'real-dark') {
+        currentThemeIcon.innerHTML = icons.realDark;
+    } else if (theme === 'dark') {
+        currentThemeIcon.innerHTML = icons.dark;
+    } else {
+        currentThemeIcon.innerHTML = icons.light;
+    }
+
+    // Update Active State in Menu
+    themeOptions.forEach(option => {
+        option.classList.remove('selected');
+        if (option.dataset.value === theme) {
+            option.classList.add('selected');
+        }
+    });
+}
+
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
+    let defaultTheme = 'light';
+
+    if (savedTheme) {
+        defaultTheme = savedTheme;
+    } else if (prefersDark) {
+        defaultTheme = 'dark';
     }
+
+    setTheme(defaultTheme);
 }
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+// Dropdown Logic
+themeToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isExpanded = themeToggleBtn.getAttribute('aria-expanded') === 'true';
+    themeToggleBtn.setAttribute('aria-expanded', !isExpanded);
+    themeMenu.classList.toggle('active');
+    themeMenu.classList.toggle('hidden'); // Logic support for both classes just in case
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!themeToggleBtn.contains(e.target) && !themeMenu.contains(e.target)) {
+        themeMenu.classList.remove('active');
+        themeMenu.classList.add('hidden');
+        themeToggleBtn.setAttribute('aria-expanded', 'false');
+    }
+});
+
+// Handle Option Click
+themeOptions.forEach(option => {
+    option.addEventListener('click', () => {
+        const selectedTheme = option.dataset.value;
+        setTheme(selectedTheme);
+        // Close menu
+        themeMenu.classList.remove('active');
+        themeMenu.classList.add('hidden');
+        themeToggleBtn.setAttribute('aria-expanded', 'false');
+    });
 });
 
 // Initialize
