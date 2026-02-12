@@ -1,5 +1,17 @@
 const projects = [
     {
+        name: "The Gift",
+        description: "A special digital release for a special occasion.",
+        link: "https://rajruparoychowdhury-png.github.io/the-gift/",
+        tags: ["Animation", "Gift"]
+    },
+    {
+        name: "Spirit Animal",
+        description: "Find your inner buddy! A fun way to discover your spirit animal.",
+        link: "https://rajrupa-browserstack.github.io/spirit-animal/",
+        tags: ["Fun", "Game"]
+    },
+    {
         name: "TrumpRx",
         description: "A clean, government-style dashboard for tracking simple health metrics. Minimalist and fast.",
         link: "https://trumprx.gov/",
@@ -34,18 +46,6 @@ const projects = [
         description: "Weather forecast but everything is 8-bit pixel art animations.",
         link: "#",
         tags: ["Canvas", "API"]
-    },
-    {
-        name: "The Gift",
-        description: "A special digital release for a special occasion.",
-        link: "https://rajruparoychowdhury-png.github.io/the-gift/",
-        tags: ["Animation", "Gift"]
-    },
-    {
-        name: "Spirit Animal",
-        description: "Find your inner buddy! A fun way to discover your spirit animal.",
-        link: "https://rajrupa-browserstack.github.io/spirit-animal/",
-        tags: ["Fun", "Game"]
     }
 ];
 
