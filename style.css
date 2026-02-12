@@ -8,7 +8,7 @@
     --border-color: #e5e5e5;
     --subtext: #666666;
 
-    --transition-speed: 0.3s;
+    --transition-speed: 0.1s;
 }
 
 [data-theme="dark"] {
